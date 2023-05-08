@@ -3,6 +3,7 @@
 // The update should add the attribute address with the value “972 Mission street”
 
 // update with address field where the name is...
-db.school.updateMany(
+db.school.update(
 	{name: "Holberton school"},
-	{$set: {address: "972 Mission street"}})
+	{$set: {address: "972 Mission street"}},
+	{multi: true})
