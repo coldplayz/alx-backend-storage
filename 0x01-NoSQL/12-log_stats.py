@@ -12,17 +12,17 @@ if __name__ == '__main__':
     # get count of all documents
     tot_docs = nginx.count_documents({})
     # get count of GET documents
-    get_docs = nginx.find({method: "GET"}).count()
+    get_docs = nginx.find({"method": "GET"}).count()
     # get count of POST documents
-    post_docs = nginx.find({method: "POST"}).count()
+    post_docs = nginx.find({"method": "POST"}).count()
     # get count of PUT docs
-    put_docs = nginx.find({method: "PUT"}).count()
+    put_docs = nginx.find({"method": "PUT"}).count()
     # get count of PATCH docs
-    patch_docs = nginx.find({method: "PATCH"}).count()
+    patch_docs = nginx.find({"method": "PATCH"}).count()
     # get count of DELETE docs
-    delete_docs = nginx.find({method: "DELETE"}).count()
+    delete_docs = nginx.find({"method": "DELETE"}).count()
     # get count of GET status checks
-    stat_checks = nginx.find({method: "GET", path: "/status"}).count()
+    stat_checks = nginx.find({"method": "GET", path: "/status"}).count()
 
     # presentation time
     print("{} logs".format(tot_docs))
