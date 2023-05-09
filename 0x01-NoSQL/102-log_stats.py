@@ -37,5 +37,9 @@ if __name__ == "__main__":
     print("\tmethod DELETE: {}".format(delete_num))
     print("{} status check".format(get_status))
     print("IPs:")
+    x = 0
     for i in IPs_count:
         print("\t{}: {}".format(i.get('_id'), i.get('count')))
+        x += 1
+        if x > 9:
+            break
