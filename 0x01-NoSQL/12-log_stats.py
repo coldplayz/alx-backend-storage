@@ -10,7 +10,7 @@ if __name__ == '__main__':
     nginx = db.nginx  # retrieve the collection
 
     # get count of all documents
-    tot_docs = nginx.count_documents()
+    tot_docs = nginx.count_documents({})
     # get count of GET documents
     get_docs = nginx.find({method: "GET"}).count()
     # get count of POST documents
