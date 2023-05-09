@@ -81,6 +81,7 @@ if __name__ == '__main__':
             PATCH=patch_docs,
             DELETE=delete_docs
             )
+    print("Methods:")
     for k, v in methods.items():
         print("\tmethod {}: {}".format(k, v))
     print("{} status check".format(stat_checks))
