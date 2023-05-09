@@ -12,17 +12,65 @@ if __name__ == '__main__':
     # get count of all documents
     tot_docs = nginx.count_documents({})
     # get count of GET documents
-    get_docs = len(list(nginx.find({"method": "GET"})))
+    agr = nginx.aggregate([
+        {"$match": {"method": "GET"}},
+        {"$count": "cnt"}
+        ])
+    try:
+        res = agr.next()  # get only document output
+        get_docs = res.get("cnt")
+    except StopIteration as e:
+        get_docs = 0
     # get count of POST documents
-    post_docs = len(list(nginx.find({"method": "POST"})))
+    agr = nginx.aggregate([
+        {"$match": {"method": "POST"}},
+        {"$count": "cnt"}
+        ])
+    try:
+        res = agr.next()  # get only document output
+        post_docs = res.get("cnt")
+    except StopIteration:
+        post_docs = 0
     # get count of PUT docs
-    put_docs = len(list(nginx.find({"method": "PUT"})))
+    agr = nginx.aggregate([
+        {"$match": {"method": "PUT"}},
+        {"$count": "cnt"}
+        ])
+    try:
+        res = agr.next()  # get only document output
+        put_docs = res.get("cnt")
+    except StopIteration:
+        put_docs = 0
     # get count of PATCH docs
-    patch_docs = len(list(nginx.find({"method": "PATCH"})))
+    agr = nginx.aggregate([
+        {"$match": {"method": "PATCH"}},
+        {"$count": "cnt"}
+        ])
+    try:
+        res = agr.next()  # get only document output
+        patch_docs = res.get("cnt")
+    except StopIteration:
+        patch_docs = 0
     # get count of DELETE docs
-    delete_docs = len(list(nginx.find({"method": "DELETE"})))
+    agr = nginx.aggregate([
+        {"$match": {"method": "DELETE"}},
+        {"$count": "cnt"}
+        ])
+    try:
+        res = agr.next()  # get only document output
+        delete_docs = res.get("cnt")
+    except StopIteration:
+        delete_docs = 0
     # get count of GET status checks
-    stat_checks = len(list(nginx.find({"method": "GET", "path": "/status"})))
+    agr = nginx.aggregate([
+        {"$match": {"method": "GET", "path": "/status"}},
+        {"$count": "cnt"}
+        ])
+    try:
+        res = agr.next()  # get only document output
+        stat_checks = res.get("cnt")
+    except StopIteration:
+        stat_checks = 0
 
     # presentation time
     print("{} logs".format(tot_docs))
