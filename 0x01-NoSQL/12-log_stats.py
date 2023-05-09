@@ -22,7 +22,7 @@ if __name__ == '__main__':
     # get count of DELETE docs
     delete_docs = len(list(nginx.find({"method": "DELETE"})))
     # get count of GET status checks
-    stat_checks = len(list(nginx.find({"method": "GET", path: "/status"})))
+    stat_checks = len(list(nginx.find({"method": "GET", "path": "/status"})))
 
     # presentation time
     print("{} logs".format(tot_docs))
