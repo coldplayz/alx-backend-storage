@@ -3,7 +3,7 @@
 '''
 import redis
 from uuid import uuid4
-from typing import Union, Callable, Any, Optional
+from typing import Union, Callable, Any
 
 
 class Cache():
@@ -29,7 +29,7 @@ class Cache():
         self._redis.set(rand_key, data)
         return rand_key
 
-    def get(self, key: str, fn: Optional[Callable] = None) -> Any:
+    def get(self, key: str, fn: Callable) -> Any:
         ''' Convert bytes data back to the desired format.
 
         Takes a key string argument and an optional Callable argument named fn
