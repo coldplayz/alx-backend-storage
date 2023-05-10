@@ -37,14 +37,7 @@ def call_history(fn: Callable) -> Callable:
         in_key = fn.__qualname__ + ":inputs"
         out_key = fn.__qualname__ + ":outputs"
         # store argument list
-        for arg in args:
-            if (isinstance(arg, str) or
-                    isinstance(arg, int) or
-                    isinstance(arg, float) or
-                    isinstance(arg, bytes)):
-                self._redis.rpush(in_key, arg)
-            else:
-                self._redis.rpush(in_key, str(arg))
+        self._redis.rpush(in_key, str(args))
         # get and store output
         out = fn(self, *args, **kwargs)
         self._redis.rpush(out_key, out)
