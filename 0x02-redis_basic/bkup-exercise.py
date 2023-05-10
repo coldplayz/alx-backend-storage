@@ -89,12 +89,12 @@ class Cache():
 
         return fn(data)
 
-    def get_str(self, data: bytes) -> str:
+    def get_str(self, key: str) -> str:
         ''' Decodes bytes into utf8 strings.
         '''
-        return data.decode('utf-8')
+        return self.get(key, lambda x: x.decode('utf-8'))
 
-    def get_int(self, data: bytes) -> int:
+    def get_int(self, key: str) -> int:
         ''' Decodes bytes into utf8 integers.
         '''
-        return int(data.decode('utf-8'))
+        return self.get(key, lambda x: int(x.decode('utf-8')))

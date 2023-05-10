@@ -3,7 +3,7 @@
 '''
 from functools import wraps
 from uuid import uuid4
-from typing import Union, Callable, Any, Optional
+from typing import Union, Callable, Any, Optional, List, Mapping
 import redis
 
 
@@ -13,7 +13,7 @@ def count_calls(fn: Callable) -> Callable:
     # @wraps decorator ensures wrapped/decorated
     # ...function's name and docstring remains same.
     @wraps(fn)
-    def wrapper(self, *args, **kwargs):
+    def wrapper(self, *args: List[Any], **kwargs: Mapping) -> Any:
         '''Wraps fn with functionality for tracking methid count.
 
         Will be wrapping instance methods, so first argument will be `self`.
@@ -29,6 +29,7 @@ def count_calls(fn: Callable) -> Callable:
 def call_history(fn: Callable) -> Callable:
     ''' Decorator for storing method input and output history.
     '''
+
     @wraps(fn)
     def wrapper(self, *args, **kwargs):
         ''' Wrapper function.
