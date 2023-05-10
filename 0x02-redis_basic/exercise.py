@@ -13,7 +13,7 @@ def count_calls(fn: Callable) -> Callable:
     # @wraps decorator ensures wrapped/decorated
     # ...function's name and docstring remains same.
     @wraps(fn)
-    def wrapper(self, *args, **kwargs) -> Any:
+    def wrapper(self, *args, **kwargs):
         '''Wraps fn with functionality for tracking methid count.
 
         Will be wrapping instance methods, so first argument will be `self`.
