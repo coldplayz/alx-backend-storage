@@ -6,18 +6,18 @@ import redis
 import requests
 
 client = redis.Redis()
-count = 0
 
 
 def get_page(url: str) -> str:
-    """ get a page and cach value"""
-    client.set("cached:{}".format(url), count)
+    """ get a page and cache value"""
     resp = requests.get(url)
-    client.incr("count:{}".format(url))
-    client.setex(
-            "cached:{}".format(url), 10, client.get("cached:{}".format(url)))
+    if client.ttl("count:{}".format(url)) >= 0:
+        client.incr("count:{}".format(url))
+    else:
+        client.set("count:{}".format(url), 0, ex=10)
+        client.incr("count:{}".format(url))
     return resp.text
 
 
 if __name__ == "__main__":
-    get_page('http://slowwly.robertomurray.co.uk')
+    get_page('https://www.google.com')
