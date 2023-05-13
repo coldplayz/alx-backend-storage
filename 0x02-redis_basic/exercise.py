@@ -7,29 +7,24 @@ from typing import Union, Callable, Any, Optional, List, Mapping
 import redis
 
 
-def count_calls(method: Callable) -> Callable:
-    """
-    Counts the number of times a function is called
-    Args:
-        method: The function to be decorated
-    Returns:
-        The decorated function
-    """
-    @wraps(method)
-    def wrapper(self, *args, **kwargs):
-        """
-        Wrapper function for the decorated function
-        Args:
-            self: The object instance
-            *args: The arguments passed to the function
-            **kwargs: The keyword arguments passed to the function
-        Returns:
-            The return value of the decorated function
-        """
-        key = method.__qualname__
-        self._redis.incr(key)
-        return method(self, *args, **kwargs)
+def count_calls(fn: Callable) -> Callable:
+    ''' Decorator for counting the number of times fn is called.
 
+    @wraps decorator ensures wrapped/decorated
+    ...function's name and docstring remains same.
+    '''
+    @wraps(fn)
+    def wrapper(self, *args, **kwargs):
+        '''Wraps fn with functionality for tracking methid count.
+
+        Will be wrapping instance methods, so first argument will be `self`.
+        '''
+        # increment a counter keyed to the method's qualified name
+        key = fn.__qualname__
+        self._redis.incr(key)
+        # return the method's output
+        return fn(self, *args, **kwargs)
+    # return wrapper reference
     return wrapper
 
 
