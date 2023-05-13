@@ -51,6 +51,44 @@ def call_history(method: Callable) -> Callable:
     return wrapper
 
 
+def replay(fn: Callable) -> None:
+    '''Displays the history of calls of the callable `fn`.
+    '''
+    key = fn.__qualname__
+    client = redis.Redis()
+    input_key = key + ":inputs"
+    output_key = key + ":outputs"
+
+    # get inputs and corresponding outputs in a list of bytes
+    inputs_enc = client.lrange(input_key, 0, -1)
+    outputs_enc = client.lrange(output_key, 0, -1)
+    # decode input list items
+    inputs_dec = []
+    for byts in inputs_enc:
+        arg = byts.decode('utf-8')
+        if arg.isnumeric():
+            # an integer argument
+            inputs_dec.append(int(arg))
+            continue
+        try:
+            arg = float(arg)
+            inputs_dec.append(arg)  # float argument
+        except ValueError:
+            # a string argument; base case
+            inputs_dec.append(arg)
+    # decode output list items
+    outputs_dec = []
+    for byts in outputs_enc:
+        # outputs are expected to be all strings
+        outputs_dec.append(byts.decode('utf-8'))
+
+    call_no = len(outputs_dec)
+
+    print("Cache.store was called {} times:".format(call_no))
+    for inp, out in zip(inputs_dec, outputs_dec):
+        print("Cache.store(*{}) -> {}".format(inp, out))
+
+
 class Cache():
     ''' Implements a caching interface.
     '''
