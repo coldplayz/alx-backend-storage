@@ -24,6 +24,7 @@ def count_calls(method: Callable) -> Callable:
         self._redis.incr(key)
         # return the method's output
         return method(self, *args, **kwargs)
+
     # return wrapper reference
     return wrapper
 
