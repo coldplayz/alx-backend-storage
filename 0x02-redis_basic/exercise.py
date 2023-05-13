@@ -20,9 +20,12 @@ def count_calls(method: Callable) -> Callable:
         Will be wrapping instance methods, so first argument will be `self`.
         '''
         # increment a counter keyed to the method's qualified name
-        key = method.__qualname__
-        self._redis.incr(method.__qualname__)
+        # key = method.__qualname__
+        # self._redis.incr(method.__qualname__)
         # return the method's output
+        # return method(self, *args, **kwargs)
+        key = method.__qualname__
+        self._redis.incr(key)
         return method(self, *args, **kwargs)
 
     # return wrapper reference
