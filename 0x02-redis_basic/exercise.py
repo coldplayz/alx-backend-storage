@@ -9,9 +9,10 @@ import redis
 
 def count_calls(fn: Callable) -> Callable:
     ''' Decorator for counting the number of times fn is called.
+
+    @wraps decorator ensures wrapped/decorated
+    ...function's name and docstring remains same.
     '''
-    # wraps decorator ensures wrapped/decorated
-    # ...function's name and docstring remains same.
     @wraps(fn)
     def wrapper(self, *args, **kwargs):
         '''Wraps fn with functionality for tracking methid count.
@@ -29,7 +30,6 @@ def count_calls(fn: Callable) -> Callable:
 def call_history(fn: Callable) -> Callable:
     ''' Decorator for storing method input and output history.
     '''
-
     @wraps(fn)
     def wrapper(self, *args, **kwargs):
         ''' Wrapper function.
