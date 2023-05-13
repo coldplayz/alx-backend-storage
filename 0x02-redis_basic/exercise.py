@@ -21,7 +21,7 @@ def count_calls(method: Callable) -> Callable:
         '''
         # increment a counter keyed to the method's qualified name
         key = method.__qualname__
-        self._redis.incr(key)
+        self._redis.incr(method.__qualname__)
         # return the method's output
         return method(self, *args, **kwargs)
 
