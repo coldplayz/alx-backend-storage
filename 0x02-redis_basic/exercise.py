@@ -10,7 +10,7 @@ import redis
 def count_calls(fn: Callable) -> Callable:
     ''' Decorator for counting the number of times fn is called.
     '''
-    # @wraps decorator ensures wrapped/decorated
+    # wraps decorator ensures wrapped/decorated
     # ...function's name and docstring remains same.
     @wraps(fn)
     def wrapper(self, *args, **kwargs):
