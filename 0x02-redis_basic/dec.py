@@ -4,10 +4,25 @@ create a web cache
 """
 import redis
 import requests
+import typing
+from functools import wraps
 
 client = redis.Redis()
 
 
+def tracker(fn: typing.Callable) -> typing.Callable:
+    '''Keeps track of calls on the decorated function.
+    '''
+    cnt = 0
+    @wraps(fn)
+    def wrapper(url):
+        '''Wraps get_page function.
+        '''
+        return get_page(url)
+    return wrapper
+
+
+@tracker
 def get_page(url: str) -> str:
     """ get a page and cache value"""
     resp = requests.get(url)
@@ -22,8 +37,10 @@ def get_page(url: str) -> str:
     if client.exists(key):
         if client.ttl(key) >= 0:
             client.incr(key)
-    else:
+    elif cnt == 0:
+        # set key only once
         client.set(key, 1, ex=10)
+        cnt += 1
     return resp.text
 
 
