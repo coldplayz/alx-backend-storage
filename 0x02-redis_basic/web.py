@@ -12,6 +12,9 @@ def get_page(url: str) -> str:
     """ get a page and cache value"""
     resp = requests.get(url)
     key = "count:{}".format(url)
+    sets_key = key + ':sets'
+    if not client.exists(sets_key):
+        client.set(sets_key, 0)
     '''
     if client.ttl("count:{}".format(url)) >= 0:
         client.incr("count:{}".format(url))
@@ -20,8 +23,11 @@ def get_page(url: str) -> str:
         client.incr("count:{}".format(url))
     '''
     if client.exists(key):
-        if client.ttl(key) >= 0:
+        if client.ttl(key) >= 0 and int(client.get(sets_key)) == 0:
             client.incr(key)
+        else:
+            # expired key
+            client.set(sets_key, 1)
     else:
         client.set(key, 1, ex=10)
     return resp.text
